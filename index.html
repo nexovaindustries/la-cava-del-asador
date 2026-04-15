@@ -58,17 +58,37 @@
         radial-gradient(ellipse 60% 40% at 50% 100%, rgba(20,5,2,.8) 0%, transparent 70%);
     }
 
-    /* ===== EMBERS ===== */
+    /* ===== EMBERS / GRILL SPARKS ===== */
     .ember {
       position: fixed; border-radius: 50%; pointer-events: none;
-      z-index: 1; animation: emberFloat linear infinite;
-      background: radial-gradient(circle, #FFBA38 0%, #E84C1E 60%, transparent 100%);
+      z-index: 1; animation: sparkRise linear forwards;
+      /* White-hot core → amber → ember red */
+      background: radial-gradient(circle, #FFFDE0 0%, #FFD060 25%, #FF8C1A 55%, rgba(200,50,0,.2) 80%, transparent 100%);
     }
-    @keyframes emberFloat {
-      0%   { transform: translateY(0) translateX(0) scale(1);   opacity: .9; }
-      30%  { transform: translateY(-25vh) translateX(var(--ex)) scale(.8); opacity: .7; }
-      70%  { transform: translateY(-65vh) translateX(calc(var(--ex)*1.5)) scale(.4); opacity: .4; }
-      100% { transform: translateY(-100vh) translateX(calc(var(--ex)*2)) scale(0); opacity: 0; }
+    .ember.dim {
+      background: radial-gradient(circle, #FFD060 0%, #FF6A00 45%, rgba(160,30,0,.15) 80%, transparent 100%);
+    }
+    @keyframes sparkRise {
+      0%   {
+        transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      12%  {
+        transform: translateY(-8vh) translateX(calc(var(--ex)*.25)) scale(.9) rotate(var(--rot));
+        opacity: .95;
+      }
+      35%  {
+        transform: translateY(-28vh) translateX(calc(var(--ex)*.6)) scale(.55) rotate(calc(var(--rot)*2));
+        opacity: .75;
+      }
+      65%  {
+        transform: translateY(-58vh) translateX(calc(var(--ex)*1.1)) scale(.22) rotate(calc(var(--rot)*3.5));
+        opacity: .35;
+      }
+      100% {
+        transform: translateY(-92vh) translateX(calc(var(--ex)*1.6)) scale(0) rotate(calc(var(--rot)*5));
+        opacity: 0;
+      }
     }
 
     /* ===== SMOKE ===== */
@@ -180,65 +200,64 @@
 
     /* ===== HERO ===== */
     #hero {
-      position: relative; height: 100vh; min-height: 600px;
-      display: flex; align-items: center; justify-content: center;
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center;
       overflow: hidden;
     }
+    /* Atmospheric gradient background — no full-bleed photo */
     #hero-bg {
       position: absolute; inset: 0; z-index: 0;
-      background-image: url('./images/facade-night.jpg');
-      background-size: cover; background-position: center 25%;
-      transform-origin: center;
-      animation: heatHaze 11s ease-in-out infinite;
-    }
-    #hero-bg::after {
-      content: '';
-      position: absolute; inset: 0;
       background:
-        linear-gradient(to bottom, rgba(5,2,0,.55) 0%, rgba(5,2,0,.1) 30%, rgba(5,2,0,.45) 70%, rgba(5,2,0,1) 100%),
-        linear-gradient(to right, rgba(5,2,0,.65) 0%, transparent 35%, transparent 65%, rgba(5,2,0,.55) 100%);
+        radial-gradient(ellipse 100% 70% at 30% 50%, rgba(50,14,4,.45) 0%, transparent 65%),
+        radial-gradient(ellipse 70% 50% at 80% 50%, rgba(20,6,2,.5) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 40% at 50% 100%, rgba(100,24,4,.5) 0%, transparent 55%);
     }
-    @keyframes heatHaze {
-      0%,100% { transform: scale(1.04) skewX(0deg); }
-      33%      { transform: scale(1.045) skewX(.15deg); }
-      66%      { transform: scale(1.04) skewX(-.1deg); }
+
+    /* Split grid layout */
+    .hero-inner {
+      position: relative; z-index: 5;
+      width: 100%; max-width: 1280px; margin: 0 auto;
+      padding: 6rem 4rem 5rem;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .hero-text {
+      display: flex; flex-direction: column;
+      align-items: flex-start;
     }
 
     /* fire line at bottom of hero */
     #hero-fire-line {
       position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
-      height: 80px; pointer-events: none;
-      background: linear-gradient(to top, rgba(140,30,5,.6) 0%, transparent 100%);
+      height: 100px; pointer-events: none;
+      background: linear-gradient(to top, rgba(120,26,4,.65) 0%, transparent 100%);
     }
     #hero-fire-line::before {
       content: '';
       position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 80'%3E%3Cpath d='M0 80 Q50 40 100 60 Q150 20 200 50 Q250 10 300 45 Q350 0 400 40 Q450 15 500 55 Q550 5 600 40 Q650 20 700 50 Q750 0 800 45 Q850 15 900 55 Q950 5 1000 40 Q1050 20 1100 50 Q1150 10 1200 45 L1200 80Z' fill='rgba(160,40,8,.4)'/%3E%3C/svg%3E") no-repeat bottom / 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 100'%3E%3Cpath d='M0 100 Q40 55 80 72 Q120 35 160 58 Q200 18 250 50 Q300 8 350 45 Q400 0 450 40 Q490 12 530 55 Q570 5 620 42 Q660 18 700 52 Q740 2 790 44 Q840 15 880 55 Q920 5 970 42 Q1010 20 1060 50 Q1100 8 1150 44 Q1180 20 1200 48 L1200 100Z' fill='rgba(140,35,6,.45)'/%3E%3C/svg%3E") no-repeat bottom / 100%;
     }
 
-    .hero-content {
-      position: relative; z-index: 5;
-      text-align: center; padding: 0 1.5rem;
-    }
     .hero-eyebrow {
-      font-family: 'Lato', sans-serif; font-size: .75rem; font-weight: 700;
-      letter-spacing: .5em; text-transform: uppercase;
-      color: #C8960C; margin-bottom: 1.25rem;
+      font-family: 'Lato', sans-serif; font-size: .72rem; font-weight: 700;
+      letter-spacing: .55em; text-transform: uppercase;
+      color: #C8960C; margin-bottom: 1.5rem;
       opacity: 0; transform: translateY(20px);
     }
     .hero-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 900; line-height: .95;
+      font-size: clamp(3.2rem, 6.5vw, 6.5rem);
+      font-weight: 900; line-height: .93;
       color: #F5E6D0;
-      text-shadow: 0 4px 40px rgba(0,0,0,.8), 0 0 80px rgba(180,60,10,.3);
+      text-shadow: 0 4px 40px rgba(0,0,0,.9), 0 2px 6px rgba(0,0,0,.6);
       opacity: 0; transform: translateY(40px);
-      margin-bottom: .5rem;
+      margin-bottom: .6rem;
     }
     .hero-title em {
-      font-style: italic; color: #C8960C;
-      display: block;
-      background: linear-gradient(90deg, #C8960C 0%, #F0C040 40%, #FFDA6A 55%, #F0C040 70%, #C8960C 100%);
+      font-style: italic; display: block;
+      background: linear-gradient(90deg, #B8820A 0%, #E8B830 35%, #FFD86A 52%, #E8B830 68%, #B8820A 100%);
       background-size: 200% auto;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -250,27 +269,67 @@
     }
     .hero-sub {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.15rem, 2.5vw, 1.85rem);
+      font-size: clamp(1.1rem, 1.8vw, 1.55rem);
       font-style: italic; font-weight: 300;
-      color: #D4C4A8; letter-spacing: .12em;
-      margin-bottom: 2.5rem;
+      color: #C8B080; letter-spacing: .1em;
+      margin-bottom: 2rem; margin-top: .6rem;
       opacity: 0; transform: translateY(20px);
     }
     .hero-divider {
-      width: 80px; height: 2px; background: #C8960C;
-      margin: 0 auto 2rem; opacity: 0;
+      width: 70px; height: 1px;
+      background: linear-gradient(90deg, #C8960C, rgba(200,150,12,.3));
+      margin-bottom: 2rem; opacity: 0; position: relative;
     }
-    .hero-divider::before, .hero-divider::after {
-      content: '◆'; display: inline-block; color: #C8960C;
-      font-size: .5rem; vertical-align: middle;
-      margin: 0 .5rem; position: absolute; top: 50%; transform: translateY(-50%);
+    .hero-divider::after {
+      content: '◆'; position: absolute; left: calc(100% + .6rem); top: 50%;
+      transform: translateY(-50%); font-size: .35rem; color: rgba(200,150,12,.5);
     }
-    .hero-divider { position: relative; }
-    .hero-divider::before { left: -1rem; }
-    .hero-divider::after  { right: -1rem; }
     .hero-btns {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      display: flex; gap: 1rem; flex-wrap: wrap;
       opacity: 0; transform: translateY(20px);
+    }
+
+    /* ===== HERO PHOTO COMPOSITION ===== */
+    .hero-photos {
+      position: relative; height: 540px;
+      opacity: 0; transform: translateX(30px);
+    }
+    .hero-photo-frame {
+      position: absolute; overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0,0,0,.8), 0 0 0 1px rgba(200,150,12,.18);
+    }
+    /* Inner inset frame — luxury mat effect */
+    .hero-photo-frame::before {
+      content: ''; position: absolute; inset: 8px;
+      border: 1px solid rgba(200,150,12,.22); z-index: 2; pointer-events: none;
+    }
+    .hero-photo-frame img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: brightness(.68) saturate(1.35) contrast(1.1);
+      transition: filter .6s;
+    }
+    .hero-photo-frame:hover img { filter: brightness(.82) saturate(1.4) contrast(1.08); }
+
+    /* Large frame — facade nocturna */
+    .hero-photo-1 {
+      width: 76%; height: 60%;
+      top: 0; right: 0;
+      transform: rotate(1.8deg);
+    }
+    /* Small frame — el toro */
+    .hero-photo-2 {
+      width: 60%; height: 56%;
+      bottom: 0; left: 0;
+      transform: rotate(-2.2deg);
+      z-index: 2;
+    }
+    /* Gold caption on photo */
+    .hero-photo-2::after {
+      content: 'El Toro';
+      position: absolute; bottom: 14px; right: 14px; z-index: 3;
+      font-family: 'Lato', sans-serif; font-size: .58rem; font-weight: 700;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: rgba(200,150,12,.75); pointer-events: none;
     }
     .btn-primary {
       padding: .85rem 2.5rem;
@@ -778,13 +837,21 @@
       .vinos-cols    { grid-template-columns: 1fr; gap: 2rem; }
       .footer-grid   { grid-template-columns: 1fr 1fr; }
     }
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem 3rem; }
+      .hero-photos { height: 320px; order: -1; }
+      .hero-photo-1 { width: 72%; height: 58%; }
+      .hero-photo-2 { width: 55%; height: 52%; }
+      .hero-text { align-items: center; text-align: center; }
+      .hero-divider { margin-left: auto; margin-right: auto; }
+    }
     @media (max-width: 767px) {
       .rv-up, .rv-left, .rv-right, .rv-scale, .rv-fade { opacity: 1 !important; transform: none !important; }
       .ember, .smoke { display: none !important; }
       #navbar { padding: .8rem 1.25rem; }
       .nav-links, .nav-cta { display: none !important; }
       #nav-burger { display: flex !important; }
-      .hero-title { font-size: clamp(2.4rem, 10vw, 4rem); }
+      .hero-title { font-size: clamp(2.4rem, 10vw, 3.8rem); }
       .hero-btns { flex-direction: column; align-items: center; }
       .stats-grid { grid-template-columns: repeat(2,1fr); gap: .75rem; }
       .galeria-grid { grid-template-columns: repeat(2,1fr); }
@@ -873,19 +940,34 @@
   <section id="hero">
     <div id="hero-bg"></div>
     <div id="hero-fire-line"></div>
-    <div class="hero-content">
-      <p class="hero-eyebrow" id="he">Arequipa, Perú — Desde 2018</p>
-      <h1 class="hero-title" id="ht">
-        La Cava del<br>
-        <em>Asador</em>
-      </h1>
-      <p class="hero-sub" id="hs">Pasión por la carne. Excelencia gastronómica.</p>
-      <div class="hero-divider" id="hd"></div>
-      <div class="hero-btns" id="hb">
-        <a href="#carta" class="btn-primary">Ver la Carta</a>
-        <a href="#reservas" class="btn-outline">Reservar Mesa</a>
+
+    <div class="hero-inner">
+      <!-- Texto: la marca manda -->
+      <div class="hero-text">
+        <p class="hero-eyebrow" id="he">Arequipa, Perú — Desde 2018</p>
+        <h1 class="hero-title" id="ht">
+          La Cava del<br>
+          <em>Asador</em>
+        </h1>
+        <p class="hero-sub" id="hs">Pasión por la carne. Excelencia gastronómica.</p>
+        <div class="hero-divider" id="hd"></div>
+        <div class="hero-btns" id="hb">
+          <a href="#carta" class="btn-primary">Ver la Carta</a>
+          <a href="#reservas" class="btn-outline">Reservar Mesa</a>
+        </div>
+      </div>
+
+      <!-- Fotos enmarcadas: validan la marca -->
+      <div class="hero-photos" id="hp">
+        <div class="hero-photo-frame hero-photo-1">
+          <img src="./images/facade-night.jpg" alt="La Cava del Asador — fachada nocturna" loading="eager">
+        </div>
+        <div class="hero-photo-frame hero-photo-2">
+          <img src="./images/bull-sculpture.jpg" alt="El Toro — símbolo de La Cava" loading="eager">
+        </div>
       </div>
     </div>
+
     <div class="scroll-hint">
       <div class="scroll-arrow"></div>
       <span>Descubrir</span>
@@ -1576,26 +1658,36 @@
     }
   }
 
-  /* ===== EMBERS ===== */
+  /* ===== GRILL SPARKS ===== */
   function createEmber() {
     const e = document.createElement('div');
-    e.className = 'ember';
-    const size = 2 + Math.random() * 4;
+    // Mix bright (hot) and dim (cooler) sparks
+    e.className = Math.random() > .4 ? 'ember' : 'ember dim';
+    // Tiny sharp sparks — real grill scale
+    const size = .8 + Math.random() * 2.2;
+    // Concentrate spawning at lower-center (like an actual grill)
+    const cx = 30 + Math.random() * 40;          // 30–70vw
+    const scatter = (Math.random() - .5) * 12;   // ±6vw scatter per spawn
+    const spawnX = Math.max(2, Math.min(98, cx + scatter));
+    const dur = 1.6 + Math.random() * 3.2;        // fast: 1.6–4.8s
+    const drift = (Math.random() - .5) * 90;      // horizontal ±45px
+    const rot = (Math.random() - .5) * 720;       // spin while rising
     e.style.cssText = `
       width:${size}px; height:${size}px;
-      left:${Math.random() * 100}vw;
-      bottom:${-size}px;
-      --ex:${(Math.random() - .5) * 60}px;
-      animation-duration:${4 + Math.random() * 8}s;
-      animation-delay:${Math.random() * 6}s;
-      opacity:${.5 + Math.random() * .5};
+      left:${spawnX}vw;
+      bottom:0;
+      --ex:${drift}px;
+      --rot:${rot}deg;
+      animation-duration:${dur}s;
+      animation-delay:${Math.random() * .4}s;
+      opacity:${.65 + Math.random() * .35};
     `;
     document.body.appendChild(e);
-    setTimeout(() => e.remove(), 15000);
+    setTimeout(() => e.remove(), (dur + .6) * 1000);
   }
-  // Create embers continuously
-  setInterval(createEmber, 200);
-  for (let i = 0; i < 20; i++) createEmber();
+  // More frequent but short-lived = lively grill effect
+  setInterval(createEmber, 110);
+  for (let i = 0; i < 35; i++) createEmber();
 
   /* ===== SMOKE ===== */
   function createSmoke() {
@@ -1675,19 +1767,25 @@
   /* ===== GSAP ANIMATIONS ===== */
   gsap.registerPlugin(ScrollTrigger);
 
-  // Hero entrance
+  // Hero entrance — text first, then photos slide in
   gsap.timeline({ delay: .2 })
     .to('#he', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' })
-    .to('#ht', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=.4')
+    .to('#ht', { opacity: 1, y: 0, duration: 1,  ease: 'power3.out' }, '-=.4')
     .to('#hs', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, '-=.5')
     .to('#hd', { opacity: 1, duration: .6, ease: 'power2.out' }, '-=.3')
-    .to('#hb', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, '-=.4');
+    .to('#hb', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, '-=.4')
+    .to('#hp', { opacity: 1, x: 0, duration: 1.1, ease: 'power3.out' }, '-=.8');
 
-  // Hero parallax
-  gsap.to('#hero-bg', {
-    yPercent: 20,
+  // Photos subtle parallax on scroll — each frame drifts at different rate
+  gsap.to('.hero-photo-1', {
+    yPercent: 12,
     ease: 'none',
-    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.8 }
+  });
+  gsap.to('.hero-photo-2', {
+    yPercent: -8,
+    ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 2.2 }
   });
 
   // Scroll reveals
