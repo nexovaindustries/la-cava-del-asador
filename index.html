@@ -685,18 +685,37 @@
       border: 1px solid rgba(200,150,12,.18);
       display: block;
     }
-    .vinos-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .vinos-list { display: flex; flex-direction: column; }
+    /* Vinos tabs */
+    .vinos-tabs {
+      display: flex; flex-wrap: wrap; gap: .35rem;
+      margin-bottom: 1.75rem;
+    }
+    .vinos-tab {
+      padding: .42rem 1rem; background: transparent;
+      border: 1px solid rgba(200,150,12,.2);
+      font-family: 'Lato', sans-serif; font-size: .66rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: #8A7860; transition: all .25s; white-space: nowrap; cursor: pointer;
+    }
+    .vinos-tab:hover { border-color: rgba(200,150,12,.5); color: #C8A060; }
+    .vinos-tab.active {
+      background: rgba(200,150,12,.1); border-color: rgba(200,150,12,.5); color: #C8960C;
+    }
+    /* Vinos panels */
+    .vinos-panel { display: none; }
+    .vinos-panel.active { display: block; }
     .vino-group-title {
       font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic;
       color: #C8960C; margin-bottom: .5rem;
     }
     .vino-entry {
-      display: flex; justify-content: space-between;
+      display: flex; justify-content: space-between; gap: 1rem;
       padding: .6rem 0; border-bottom: 1px solid rgba(255,255,255,.06);
       font-family: 'Cormorant Garamond', serif; font-size: 1rem;
     }
     .vino-entry-name { color: #D4C4A8; }
-    .vino-entry-price { color: #C8960C; font-weight: 600; }
+    .vino-entry-price { color: #C8960C; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
 
     /* ===== RESERVAS ===== */
     #reservas {
@@ -1439,26 +1458,38 @@
       <div class="vinos-cols">
         <div class="rv-left">
           <img
-            src="./images/wine-cellar.jpg"
+            src="./images/wine-cellar-2.jpg"
             alt="Cava de vinos La Cava del Asador"
             class="vinos-img-primary"
             loading="lazy"
           >
         </div>
         <div class="vinos-list rv-right">
-          <div>
-            <p class="vino-group-title">Espumosos</p>
+          <!-- Tabs -->
+          <div class="vinos-tabs">
+            <button class="vinos-tab active"  data-vtab="espumosos">Espumosos</button>
+            <button class="vinos-tab" data-vtab="blancos">Blancos & Rosados</button>
+            <button class="vinos-tab" data-vtab="chilenos">Tintos Chilenos</button>
+            <button class="vinos-tab" data-vtab="peruanos">Tintos Peruanos</button>
+            <button class="vinos-tab" data-vtab="arequipenos">Tintos Arequipeños</button>
+            <button class="vinos-tab" data-vtab="espanoles">Tintos Españoles</button>
+          </div>
+
+          <!-- Panel: Espumosos -->
+          <div class="vinos-panel active" id="vtab-espumosos">
             <div class="vino-entry"><span class="vino-entry-name">Freixenet Cordon Negro Brut</span><span class="vino-entry-price">Consultar</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Chandon Extra Brut</span><span class="vino-entry-price">Consultar</span></div>
           </div>
-          <div>
-            <p class="vino-group-title">Blancos & Rosados</p>
+
+          <!-- Panel: Blancos & Rosados -->
+          <div class="vinos-panel" id="vtab-blancos">
             <div class="vino-entry"><span class="vino-entry-name">Chardonnay Reserva</span><span class="vino-entry-price">Consultar</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Sauvignon Blanc</span><span class="vino-entry-price">Consultar</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Rosé Malbec</span><span class="vino-entry-price">Consultar</span></div>
           </div>
-          <div>
-            <p class="vino-group-title">Tintos Chilenos</p>
+
+          <!-- Panel: Tintos Chilenos -->
+          <div class="vinos-panel" id="vtab-chilenos">
             <div class="vino-entry"><span class="vino-entry-name">Concha de los Andes — Carmenère</span><span class="vino-entry-price">S/ 199</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Errazuriz Max — Carmenère</span><span class="vino-entry-price">S/ 189</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Errazuriz Reserva — Shiraz</span><span class="vino-entry-price">S/ 161</span></div>
@@ -1466,22 +1497,25 @@
             <div class="vino-entry"><span class="vino-entry-name">Las Mulas Reserva — Carmenère</span><span class="vino-entry-price">S/ 118</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Loco de Piedra Reserva — Cabernet Sauvignon</span><span class="vino-entry-price">S/ 70</span></div>
           </div>
-          <div>
-            <p class="vino-group-title">Tintos Peruanos</p>
+
+          <!-- Panel: Tintos Peruanos -->
+          <div class="vinos-panel" id="vtab-peruanos">
             <div class="vino-entry"><span class="vino-entry-name">Intipalka N° 3</span><span class="vino-entry-price">S/ 267</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Intipalka Cabernet Sauvignon — Petit Verdot</span><span class="vino-entry-price">S/ 72</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Tacama, Malbec</span><span class="vino-entry-price">S/ 59</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Tacama Gran Tinto</span><span class="vino-entry-price">S/ 47</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Nettarea Reserva, Malbec</span><span class="vino-entry-price">S/ 55</span></div>
           </div>
-          <div>
-            <p class="vino-group-title">Tintos Arequipeños</p>
+
+          <!-- Panel: Tintos Arequipeños -->
+          <div class="vinos-panel" id="vtab-arequipenos">
             <div class="vino-entry"><span class="vino-entry-name">Heaven Club — Blend Roble</span><span class="vino-entry-price">S/ 105</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Condes de la Conquista — Negra Criolla</span><span class="vino-entry-price">S/ 99</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Heaven Club — Malbec</span><span class="vino-entry-price">S/ 80</span></div>
           </div>
-          <div>
-            <p class="vino-group-title">Tintos Españoles</p>
+
+          <!-- Panel: Tintos Españoles -->
+          <div class="vinos-panel" id="vtab-espanoles">
             <div class="vino-entry"><span class="vino-entry-name">Frutos Crianza — Tinto del Paso</span><span class="vino-entry-price">S/ 244</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Marqués de Riscal — Reserva</span><span class="vino-entry-price">S/ 214</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Marqués de Riscal — Tempranillo, Syrah</span><span class="vino-entry-price">S/ 97</span></div>
@@ -1489,7 +1523,8 @@
             <div class="vino-entry"><span class="vino-entry-name">Pata Negra — Tempranillo, Roble</span><span class="vino-entry-price">S/ 100</span></div>
             <div class="vino-entry"><span class="vino-entry-name">Sangre de Toro — Garnacha, Cariñena</span><span class="vino-entry-price">S/ 100</span></div>
           </div>
-          <p style="font-size:.75rem;color:#6A5A48;font-style:italic;margin-top:.5rem;">
+
+          <p style="font-size:.75rem;color:#5A4A38;font-style:italic;margin-top:1.25rem;">
             * Consulte nuestra bodega completa con el sommelier de la casa.
           </p>
         </div>
@@ -1739,6 +1774,17 @@
     burger.classList.remove('open');
     mobileMenu.classList.remove('open');
   }
+
+  /* ===== VINOS TABS ===== */
+  document.querySelectorAll('.vinos-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vinos-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.vinos-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById('vtab-' + btn.dataset.vtab);
+      if (panel) panel.classList.add('active');
+    });
+  });
 
   /* ===== MENU TABS ===== */
   document.querySelectorAll('.tab-btn').forEach(btn => {
